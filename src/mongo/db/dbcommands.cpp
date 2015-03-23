@@ -1473,6 +1473,8 @@ namespace mongo {
         std::string dbname = nsToDatabase( cmdns );
         scoped_ptr<MaintenanceModeSetter> mmSetter;
 
+	client.curop()->ensureStarted();
+
         if ( cmdObj["help"].trueValue() ) {
             client.curop()->ensureStarted();
             stringstream ss;
