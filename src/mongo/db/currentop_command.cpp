@@ -151,19 +151,33 @@ namespace mongo {
         replyToQuery(0, message, dbresponse, retVal.obj());
     }
 
-
     void fillLockerInfo(const Locker::LockerInfo& lockerInfo, BSONObjBuilder& infoBuilder) {
         // "locks" section
         BSONObjBuilder locks(infoBuilder.subobjStart("locks"));
-        for (size_t i = 0; i < lockerInfo.locks.size(); i++) {
-            const Locker::OneLock& lock = lockerInfo.locks[i];
+        const size_t locksSize = lockerInfo.locks.size();
 
-            if (resourceIdLocalDB == lock.resourceId) {
+        // Only add the last lock of each type, and use the largest mode encountered
+        LockMode modeForType[LockModesCount] = {};  // default initialize to zero (min value)
+        for (size_t i = 0; i < locksSize; i++) {
+            const Locker::OneLock& lock = lockerInfo.locks[i];
+            const ResourceType lockType = lock.resourceId.getType();
+            const LockMode lockMode = std::max(lock.mode, modeForType[lockType]);
+
+            // Check that lockerInfo is sorted on resource type
+            invariant(i == 0 || lockType >= lockerInfo.locks[i - 1].resourceId.getType());
+
+            if (lock.resourceId == resourceIdLocalDB) {
+
                 locks.append("local", legacyModeName(lock.mode));
+                continue;
             }
-            else {
-                locks.append(
-                    resourceTypeName(lock.resourceId.getType()), legacyModeName(lock.mode));
+
+            modeForType[lockType] = lockMode;
+
+            if (i + 1 < locksSize && lockerInfo.locks[i + 1].resourceId.getType() == lockType) {
+                continue;  // skip this lock as it is not the last one of its type
+            } else {
+                locks.append(resourceTypeName(lockType), legacyModeName(lockMode));
             }
         }
         locks.done();
