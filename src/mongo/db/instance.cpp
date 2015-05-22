@@ -378,6 +378,7 @@ namespace mongo {
 
         CurOp& currentOp = *currentOpP;
         currentOp.reset(remote,op);
+        currentOp.ensureStarted();
 
         OpDebug& debug = currentOp.debug();
         debug.op = op;
