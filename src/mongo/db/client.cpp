@@ -230,9 +230,14 @@ namespace {
         }
     }
 
+    AutoEnsureStarted::AutoEnsureStarted(OperationContext *txn) {
+        txn->getCurOp()->ensureStarted();
+    }
+
     AutoGetCollectionForRead::AutoGetCollectionForRead(OperationContext* txn,
                                                        const std::string& ns)
-            : _txn(txn),
+            : _ensureStarted(txn),
+              _txn(txn),
               _transaction(txn, MODE_IS),
               _db(_txn, nsToDatabaseSubstring(ns), MODE_IS),
               _collLock(_txn->lockState(), ns, MODE_IS),
@@ -243,7 +248,8 @@ namespace {
 
     AutoGetCollectionForRead::AutoGetCollectionForRead(OperationContext* txn,
                                                        const NamespaceString& nss)
-            : _txn(txn),
+            : _ensureStarted(txn),
+              _txn(txn),
               _transaction(txn, MODE_IS),
               _db(_txn, nss.db(), MODE_IS),
               _collLock(_txn->lockState(), nss.toString(), MODE_IS),
@@ -256,7 +262,6 @@ namespace {
         massert(28535, "need a non-empty collection name", !coll.empty());
 
         // TODO: Client::Context legacy, needs to be removed
-        _txn->getCurOp()->ensureStarted();
         _txn->getCurOp()->setNS(ns);
 
         // We have both the DB and collection locked, which the prerequisite to do a stable shard

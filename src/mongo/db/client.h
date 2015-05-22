@@ -121,6 +121,11 @@ namespace mongo {
         bool _justCreated;
     };
 
+    class AutoEnsureStarted {
+    public:
+      AutoEnsureStarted(OperationContext *txn);
+    };
+
     /**
      * RAII-style class, which would acquire the appropritate hierarchy of locks for obtaining
      * a particular collection and would retrieve a reference to the collection.
@@ -149,6 +154,7 @@ namespace mongo {
         void _init(const std::string& ns,
                    const StringData& coll);
 
+        AutoEnsureStarted _ensureStarted;
         const Timer _timer;
         OperationContext* const _txn;
         const ScopedTransaction _transaction;
