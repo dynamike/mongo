@@ -1,6 +1,7 @@
 general:
   branches:
-    only: v3.0-fb
+    only: 
+      - v3.0-fb
 machine:
   services:
     - docker
