@@ -9,5 +9,9 @@ dependencies:
   override:
     - docker info
     - docker pull centos
-    - docker run -t -i centos /bin/bash
+test:
+  post:
+    - docker run -t -i centos
+    - yum install -y wget gcc gcc-g++ git make
+
 
