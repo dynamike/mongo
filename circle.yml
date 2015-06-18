@@ -1,0 +1,11 @@
+general:
+  branches:
+    only: v3.0-fb
+machine:
+  services:
+    - docker
+dependencies:
+  override:
+    - docker info
+    - docker build -t centos/centos7
+
