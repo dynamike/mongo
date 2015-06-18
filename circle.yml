@@ -11,7 +11,7 @@ dependencies:
     - docker pull centos
 test:
   post:
-    - docker run -t -i centos
+    - docker run -t -i centos; sleep 10
     - yum install -y wget gcc gcc-g++ git make
 
 
