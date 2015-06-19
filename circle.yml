@@ -1,17 +1,10 @@
-general:
-  branches:
-    only: 
-      - v3.0-fb
 machine:
   services:
     - docker
 dependencies:
+  cache_directories:
+    - "~/docker"
   override:
     - docker info
-    - docker pull centos
-test:
-  post:
-    - docker run -t -i centos; sleep 10
-    - yum install -y wget gcc gcc-g++ git make
-
+    - docker build -t dynamike/mongo .
 

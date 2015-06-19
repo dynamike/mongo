@@ -1,5 +1,0 @@
-language: cpp
-script: scons --c++11 mongo mongodb
-os:
- - linux
-
