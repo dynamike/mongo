@@ -16,8 +16,8 @@ RUN apt-get update && \
       scons \
       zlib1g-dev
 
-ADD mongodb.conf /etc/mongodb.conf
-ADD entrypoint /usr/bin/mongo-entrypoint
+#ADD mongodb.conf /etc/mongodb.conf
+#ADD entrypoint /usr/bin/mongo-entrypoint
 
 ENV \
   BUILD_DIR=/tmp/mongobuild \
