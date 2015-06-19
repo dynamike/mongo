@@ -40,10 +40,10 @@ RUN git clone --branch v3.0-fb https://github.com/mongodb-partners/mongo
 WORKDIR $BUILD_DIR/mongo
 RUN scons \
       --extrapath=${ROCKSDB_PATH} \
-      --rocksdb=rocksdb --c++11 \
+      --rocksdb=rocksdb \
+      --c++11 \
       --disable-minimum-compiler-version-enforcement \
-      -j16 \
-      --prefix ${MONGO_BUILD_DIR} \
+      -j16 \      
       --variant-dir \
       --release \
       mongod mongo
