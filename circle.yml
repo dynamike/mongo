@@ -8,5 +8,7 @@ dependencies:
     - "~/docker"
   override:
     - docker info
+    - if [[ -e ~/docker/image.tar ]]; then docker load --input ~/docker/image.tar; fi
     - docker build -t dynamike/mongo .
+    - mkdir -p ~/docker; docker save circleci/elasticsearch > ~/docker/image.tar
 
