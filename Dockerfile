@@ -22,22 +22,22 @@ RUN apt-get update && \
 ENV \
   BUILD_DIR=/tmp/mongobuild \
   ROCKSDB_VERSION=rocksdb-3.11.2 \
-  ROCKSDB_PATH=$BUILD_DIR/rocksdb-install \
+  ROCKSDB_PATH=${BUILD_DIR}/rocksdb-install \
   MONGO_TOOLS_VERSION="r3.0.4" \
   MONGO_VERSION="3.0.4"  \
   MONGO_BUILD=mongodb-linux-x86_64-${MONGO_VERSION} \
   MONGO_BUILD_DIR=${BUILD_DIR}/${MONGO_BUILD} \
   MONGO_TARBALL=${MONGO_BUILD}.tgz
-RUN mkdir -p $BUILD_DIR
+RUN mkdir -p ${BUILD_DIR}
 
-RUN curl --location https://github.com/facebook/rocksdb/archive/$ROCKSDB_VERSION.tar.gz | tar xz --directory $BUILD_DIR
-WORKDIR $BUILD_DIR/rocksdb-${ROCKSDB_VERSION}
+RUN curl --location https://github.com/facebook/rocksdb/archive/${ROCKSDB_VERSION}.tar.gz | tar xz --directory ${BUILD_DIR}
+WORKDIR ${BUILD_DIR}/rocksdb-${ROCKSDB_VERSION}
 RUN make -j16 release
 RUN INSTALL_PATH=${ROCKSDB_PATH} make -j16 install
 
-WORKDIR $BUILD_DIR
+WORKDIR ${BUILD_DIR}
 RUN git clone --branch v3.0-fb https://github.com/mongodb-partners/mongo
-WORKDIR $BUILD_DIR/mongo
+WORKDIR ${BUILD_DIR}/mongo
 RUN scons \
       --extrapath=${ROCKSDB_PATH} \
       --rocksdb=rocksdb \
