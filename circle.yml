@@ -2,6 +2,8 @@ machine:
   services:
     - docker
 dependencies:
+  pre:
+    - gem install package_cloud
   cache_directories:
     - "~/docker"
   override:
