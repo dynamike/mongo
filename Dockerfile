@@ -18,8 +18,8 @@ RUN apt-get update && \
 
 ENV \
   BUILD_DIR=/tmp/mongobuild \
+  GIT_BRANCH="v3.0-fb" \
   ROCKSDB_VERSION=rocksdb-3.11.2 \
-  ROCKSDB_PATH=${BUILD_DIR}/rocksdb-install \
   MONGO_TOOLS_VERSION="r3.0.4" \
   MONGO_VERSION="3.0.4"  \
   MONGO_BUILD=mongodb-linux-x86_64-${MONGO_VERSION} \
@@ -33,14 +33,14 @@ RUN make -j16 release
 RUN make -j16 install
 
 WORKDIR ${BUILD_DIR}
-RUN git clone --branch v3.0-fb https://github.com/mongodb-partners/mongo
+RUN git clone --branch ${GIT_BRANCH} https://github.com/mongodb-partners/mongo
 WORKDIR ${BUILD_DIR}/mongo
 RUN scons \
-      --extrapath=${ROCKSDB_PATH} \
       --rocksdb=rocksdb \
       --c++11 \
       -j16 \      
       --variant-dir \
       --release \
       mongod mongo
-
+RUN tar -pczf ${MONGO_TARBALL} ${MONGO_BUILD}
+RUN python buildscripts/packager.py --tarball=${MONGO_TARBALL} -d ubuntu1404 -s ${MONGO_VERSION} -m ${GIT_BRANCH}
