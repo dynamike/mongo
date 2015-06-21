@@ -55,7 +55,5 @@ RUN scons \
       --use-new-tools \
       dist
 
-#WORKDIR ${BUILD_DIR}
-#RUN tar -pczf ${MONGO_ARCH}${MONGO_VERSION}.tgz ${MONGO_ARCH}${MONGO_VERSION}
-#WORKDIR ${BUILD_DIR}/mongo/buildscripts
-#RUN python packager.py --tarball=${BUILD_DIR}/${MONGO_ARCH}${MONGO_VERSION}.tgz -d ubuntu1404 -s ${MONGO_VERSION} -m ${GIT_BRANCH}
+WORKDIR ${BUILD_DIR}/mongo/buildscripts
+RUN python packager.py --tarball=${BUILD_DIR}/mongo/${MONGO_ARCH}${MONGO_VERSION}.tgz -d ubuntu1404 -s ${MONGO_VERSION} -m ${GIT_BRANCH}
