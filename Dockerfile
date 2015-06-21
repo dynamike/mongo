@@ -33,8 +33,6 @@ ENV MONGO_TOOLS_VERSION r3.0.4
 ENV MONGO_VERSION 3.0.4
 ENV MONGO_ARCH mongodb-linux-x86_64-
 
-ADD /packages /tmp/
-
 RUN curl --location https://github.com/facebook/rocksdb/archive/${ROCKSDB_VERSION}.tar.gz | tar xz
 WORKDIR rocksdb-${ROCKSDB_VERSION}
 RUN make -j32 release
