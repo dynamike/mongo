@@ -33,7 +33,7 @@ ENV MONGO_TOOLS_VERSION r3.0.4
 ENV MONGO_VERSION 3.0.4
 ENV MONGO_ARCH mongodb-linux-x86_64-
 
-#RUN mkdir -p -v ${BUILD_DIR}/${MONGO_ARCH}${MONGO_VERSION}/bin
+ADD /packages /tmp/
 
 RUN curl --location https://github.com/facebook/rocksdb/archive/${ROCKSDB_VERSION}.tar.gz | tar xz
 WORKDIR rocksdb-${ROCKSDB_VERSION}
@@ -58,4 +58,4 @@ RUN scons \
 
 WORKDIR ${BUILD_DIR}/mongo/buildscripts
 RUN python packager.py --tarball=${BUILD_DIR}/mongo/${MONGO_ARCH}${MONGO_VERSION}.tgz -d ubuntu1404 -s ${MONGO_VERSION} -m ${GIT_BRANCH} || true
-RUN mv $(ls -t /tmp/tmp* | cut -d":" -f1 | head -1) debs
+#RUN mv $(ls -t /tmp/tmp* | cut -d":" -f1 | head -1) debs
