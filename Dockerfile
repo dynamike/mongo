@@ -26,7 +26,7 @@ RUN \
 ENV GOROOT /goroot
 ENV GOPATH /gopath
 ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
-ENV BUILD_DIR /tmp/mongobuild
+ENV BUILD_DIR /mongobuild
 ENV GIT_BRANCH v3.0-fb
 ENV ROCKSDB_VERSION rocksdb-3.11.2
 ENV MONGO_TOOLS_VERSION r3.0.4
@@ -56,4 +56,4 @@ RUN scons \
 
 WORKDIR ${BUILD_DIR}/mongo/buildscripts
 RUN python packager.py --tarball=${BUILD_DIR}/mongo/${MONGO_ARCH}${MONGO_VERSION}.tgz -d ubuntu1404 -s ${MONGO_VERSION} -m ${GIT_BRANCH} || true
-#RUN mv $(ls -t /tmp/tmp* | cut -d":" -f1 | head -1) debs
+RUN mv $(find  /tmp/fil* -maxdepth 0 | head -1) debs
