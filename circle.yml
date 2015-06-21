@@ -12,3 +12,16 @@ dependencies:
     - docker build -t dynamike/mongo .
     - mkdir -p ~/docker; docker save dynamike/mongo > ~/docker/image.tar
 
+test:
+  override:
+    - mkdir -p /packages
+    - docker run -i -v packages:/tmp dynamike/mongo
+    - DEBIAN_FRONTEND=noninteractive sudo apt-get -y remove mongodb-10gen
+    - sudo dpkg -i packages/debs/dst/x86_64/ubuntu/ubuntu1404/*.deb
+
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - package_cloud push dynamike/mongo/ubuntu/trusty /packages/debs/dst/x86_64/ubuntu/ubuntu1404/*.deb

@@ -4,6 +4,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \
       ca-certificates \
       curl \
+      dpkg-dev \
       g++ \
       gawk \
       gcc \
@@ -36,8 +37,8 @@ ENV MONGO_ARCH mongodb-linux-x86_64-
 
 RUN curl --location https://github.com/facebook/rocksdb/archive/${ROCKSDB_VERSION}.tar.gz | tar xz
 WORKDIR rocksdb-${ROCKSDB_VERSION}
-RUN make -j16 release
-RUN make -j16 install
+RUN make -j32 release
+RUN make -j32 install
 
 WORKDIR ${BUILD_DIR}
 RUN git clone --branch ${GIT_BRANCH} https://github.com/mongodb-partners/mongo
@@ -50,10 +51,11 @@ WORKDIR ${BUILD_DIR}/mongo
 RUN scons \
       --rocksdb=rocksdb \
       --c++11 \
-      -j16 \
+      -j32 \
       --release \
       --use-new-tools \
       dist
 
 WORKDIR ${BUILD_DIR}/mongo/buildscripts
-RUN python packager.py --tarball=${BUILD_DIR}/mongo/${MONGO_ARCH}${MONGO_VERSION}.tgz -d ubuntu1404 -s ${MONGO_VERSION} -m ${GIT_BRANCH}
+RUN python packager.py --tarball=${BUILD_DIR}/mongo/${MONGO_ARCH}${MONGO_VERSION}.tgz -d ubuntu1404 -s ${MONGO_VERSION} -m ${GIT_BRANCH} || true
+RUN mv $(ls -t /tmp/tmp* | cut -d":" -f1 | head -1) debs
