@@ -2,8 +2,10 @@ FROM ubuntu:14.04
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \
+      build-essential \
       ca-certificates \
       curl \
+      debhelper \
       dpkg-dev \
       g++ \
       gawk \
