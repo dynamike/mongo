@@ -16,10 +16,10 @@ dependencies:
 test:
   override:
     - sudo mkdir -p /packages
-    - docker run -d -v /packages:/tmp dynamike/mongo; sleep 10
-    - docker cp $(docker ps | grep mongo | cut -d" " -f1):/tmp/debs /packages/
+    - docker run -i -d dynamike/mongo; sleep 10
+    - sudo docker cp $(docker ps | grep mongo | cut -d" " -f1):/debs /packages/
     - DEBIAN_FRONTEND=noninteractive sudo apt-get -y remove mongodb-10gen
-    - sudo dpkg -i packages/debs/dst/x86_64/ubuntu/ubuntu1404/*.deb
+    - sudo dpkg -i /packages/debs/dst/x86_64/ubuntu/ubuntu1404/*.deb
 
 
 deployment:

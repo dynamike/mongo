@@ -56,4 +56,4 @@ RUN scons \
 
 WORKDIR ${BUILD_DIR}/mongo/buildscripts
 RUN python packager.py --tarball=${BUILD_DIR}/mongo/${MONGO_ARCH}${MONGO_VERSION}.tgz -d ubuntu1404 -s ${MONGO_VERSION} -m ${GIT_BRANCH} || true
-RUN mv $(find  /tmp/tmp* -maxdepth 0 | head -1) debs
+RUN mv $(find  /tmp/tmp* -maxdepth 0 | head -1) /debs
