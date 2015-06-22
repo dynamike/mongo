@@ -8,10 +8,10 @@ dependencies:
     - "~/docker"
   override:
     - docker info
-    - if [[ -e ~/docker/image.tar ]]; then docker load --input ~/docker/image.tar; fi
-    - docker build -t dynamike/mongo .
-    - mkdir -p ~/docker; docker save dynamike/mongo > ~/docker/image.tar:
+    - if [[ -e ~/docker/image.tar ]]; then docker load --input ~/docker/image.tar; fi:
         timeout: 1200
+    - docker build -t dynamike/mongo .
+    - mkdir -p ~/docker; docker save dynamike/mongo > ~/docker/image.tar
 
 test:
   override:
