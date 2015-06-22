@@ -10,7 +10,8 @@ dependencies:
     - docker info
     - if [[ -e ~/docker/image.tar ]]; then docker load --input ~/docker/image.tar; fi
     - docker build -t dynamike/mongo .
-    - mkdir -p ~/docker; docker save dynamike/mongo > ~/docker/image.tar
+    - mkdir -p ~/docker; docker save dynamike/mongo > ~/docker/image.tar:
+        timeout: 1200
 
 test:
   override:
