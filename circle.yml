@@ -27,6 +27,6 @@ test:
 
 deployment:
   production:
-    branch: master
+    branch: v3.0-fb
     commands:
       - package_cloud push dynamike/mongo/ubuntu/trusty ~/packages/debs/dst/x86_64/ubuntu/ubuntu1404/*.deb
