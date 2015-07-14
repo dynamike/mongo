@@ -14,7 +14,7 @@ dependencies:
     - docker build -t dynamike/mongo .
     - mkdir -p ~/docker; docker save dynamike/mongo > ~/docker/image.tar
     - sudo mkdir -p ~/packages
-    - docker run -i -d dynameike/mongo; sleep 10
+    - docker run -i -d dynamike/mongo; sleep 10
     - sudo docker cp $(docker ps | grep mongo | cut -d" " -f1):/debs ~/packages/ && sudo chown -R ubuntu:ubuntu ~/packages
 
 test:
